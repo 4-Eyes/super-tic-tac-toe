@@ -19,14 +19,14 @@ export class Board {
     }
 
     insertMove(location: BoardLocation, token: string): void {
-        if (!this.winningToken) {
+        if (this.winningToken) {
             return;
         }
         this.sections[location.y][location.x].set(location.sectionLocation, token);
     }
 
     checkForWinner(): boolean {
-        if (!this.winningToken) {
+        if (this.winningToken) {
             return true;
         }
         // check rows/columns

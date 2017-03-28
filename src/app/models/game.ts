@@ -14,10 +14,6 @@ export class Game {
         this.tokens = ['X', 'O']; // todo: add customisations when I can be bothered.
     }
 
-    start() {
-
-    }
-
     reset() {
         this.board = new Board();
         this.turnCount = 0;
