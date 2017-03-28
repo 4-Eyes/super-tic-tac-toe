@@ -1,3 +1,5 @@
+import { BoardLocation } from './../models/position';
+import { Game } from './../models/game';
 import { Component } from '@angular/core/core';
 @Component({
   selector: 'board',
@@ -5,5 +7,7 @@ import { Component } from '@angular/core/core';
   styleUrls: ['../css/board.component.css']
 })
 export class BoardComponent {
+    private game: Game;
 
+    constructor() { }
 }
