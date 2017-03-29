@@ -1,0 +1,5 @@
+<div>
+    <button type="button" class="btn btn-default" (click)="reset()">Reset</button>
+    <p>Current turn: {{game.getCurrentToken()}}</p>
+</div>
+<board [game]="game"></board>

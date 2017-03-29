@@ -1,16 +1,15 @@
 import { BoardLocation, SectionLocation } from './../models/position';
 import { Game } from './../models/game';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'board',
   templateUrl: '../html/board.component.html',
   styleUrls: ['../css/board.component.css']
 })
 export class BoardComponent {
-    private game: Game;
+    @Input() game: Game;
 
     constructor() {
-        this.game = new Game();
     }
 
     selectChoice(upperX: number, upperY: number, x: number, y: number) {

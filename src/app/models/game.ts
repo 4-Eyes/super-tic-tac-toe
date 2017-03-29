@@ -19,6 +19,10 @@ export class Game {
         this.turnCount = 0;
     }
 
+    getCurrentToken() {
+        return this.tokens[this.turnCount % 2];
+    }
+
     makeMove(moveLocation: BoardLocation): string {
         this.board.insertMove(moveLocation, this.tokens[this.turnCount++ % 2]);
         return this.board.checkForWinner() ? this.board.getWinner() : Section.NOT_WON;
