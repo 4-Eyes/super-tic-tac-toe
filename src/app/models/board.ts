@@ -21,10 +21,10 @@ export class Board {
         return this.winningToken;
     }
 
-    disableSections() {
+    setSectionsEnabled(enabled: boolean) {
         for (const sectionRow of this.sections) {
             for (const section of sectionRow) {
-                section.isActive = false;
+                section.isActive = enabled;
             }
         }
     }
@@ -34,10 +34,16 @@ export class Board {
             return;
         }
         this.sections[location.y][location.x].set(location.sectionLocation, token);
-        // Disable all sections
-        this.disableSections();
-        // Now enable the one where play can take place next
-        this.sections[location.sectionLocation.y][location.sectionLocation.x].isActive = true;
+
+        const newSection = this.sections[location.sectionLocation.y][location.sectionLocation.x];
+        if (newSection.isFull) {
+            this.setSectionsEnabled(true);
+        } else {
+            // Disable all sections
+            this.setSectionsEnabled(false);
+            // Now enable the one where play can take place next
+            newSection.isActive = true;
+        }
     }
 
     checkForWinner(): boolean {

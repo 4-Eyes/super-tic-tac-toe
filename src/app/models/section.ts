@@ -5,8 +5,10 @@ export class Section {
     miniBoard: string[][];
     private isWon: boolean;
     private winningToken: string;
+    private inserts: number;
 
     isActive: boolean;
+    isFull: boolean;
 
     constructor() {
         this.miniBoard = [];
@@ -16,6 +18,8 @@ export class Section {
         this.isWon = false;
         this.winningToken = Section.NOT_WON;
         this.isActive = true;
+        this.inserts = 0;
+        this.isFull = false;
     }
 
     getWinningToken(): string {
@@ -32,6 +36,7 @@ export class Section {
 
     set(location: SectionLocation, token: string): void {
         this.miniBoard[location.y][location.x] = token;
+        this.isFull = ++this.inserts === 9;
         if (!this.isWon) {
             this.checkForWinner();
         }
