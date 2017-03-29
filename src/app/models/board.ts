@@ -37,6 +37,7 @@ export class Board {
 
         const newSection = this.sections[location.sectionLocation.y][location.sectionLocation.x];
         if (newSection.isFull) {
+            // if the section the person is being sent to is full then enabled all sections
             this.setSectionsEnabled(true);
         } else {
             // Disable all sections
