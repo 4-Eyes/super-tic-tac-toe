@@ -1,4 +1,4 @@
-import { BoardLocation } from './../models/position';
+import { BoardLocation, SectionLocation } from './../models/position';
 import { Game } from './../models/game';
 import { Component } from '@angular/core';
 @Component({
@@ -14,7 +14,8 @@ export class BoardComponent {
     }
 
     selectChoice(upperX: number, upperY: number, x: number, y: number) {
-        if (this.game.board.get(upperX, upperY).isActive) {
+        if (this.game.board.get(upperX, upperY).isActive &&
+        this.game.board.get(upperX, upperY).get(new SectionLocation(x, y)) === '') {
             const move = new BoardLocation(upperX, upperY, x, y);
             this.game.makeMove(move);
         }
