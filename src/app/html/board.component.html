@@ -1,4 +1,11 @@
 <div class="container">
-    <div class="row" *ngFor="let section of game.sections" >
+    <div class="row" *ngFor="let rowSection of game.board.sections; let upperY = index;" >
+        <div class="col section" *ngFor="let colSection of rowSection; let upperX = index;" [ngClass]="{'disabled' : !colSection.isActive, 'section-won-X' : colSection.getWinningToken() === 'X', 'section-won-O' : colSection.getWinningToken() === 'O'}" >
+            <div class="row" *ngFor="let row of colSection.miniBoard; let y = index;">
+                <div class="col choice" *ngFor="let col of row; let x = index;" (click)="selectChoice(upperX, upperY, x, y)">
+                    <p>{{col}}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

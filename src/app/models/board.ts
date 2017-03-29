@@ -2,11 +2,14 @@ import { BoardLocation } from './position';
 import { Section } from './section';
 
 export class Board {
-    private sections: Section[][];
+    sections: Section[][];
     private winningToken: string;
 
     constructor() {
-        this.sections = new Section[3][3];
+        this.sections = [];
+        for (let i = 0; i < 3; i++) {
+            this.sections.push([new Section, new Section, new Section]);
+        }
         this.winningToken = null;
     }
 
@@ -18,11 +21,23 @@ export class Board {
         return this.winningToken;
     }
 
+    disableSections() {
+        for (const sectionRow of this.sections) {
+            for (const section of sectionRow) {
+                section.isActive = false;
+            }
+        }
+    }
+
     insertMove(location: BoardLocation, token: string): void {
         if (this.winningToken) {
             return;
         }
         this.sections[location.y][location.x].set(location.sectionLocation, token);
+        // Disable all sections
+        this.disableSections();
+        // Now enable the one where play can take place next
+        this.sections[location.sectionLocation.y][location.sectionLocation.x].isActive = true;
     }
 
     checkForWinner(): boolean {

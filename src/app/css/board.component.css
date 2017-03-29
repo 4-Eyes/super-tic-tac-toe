@@ -1,0 +1,29 @@
+.choice {
+    width: 5em;
+    height: 5em;
+    border: solid 0.1em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.section {
+    border: solid 0.2em;
+}
+
+.choice p {
+    height: 100%;
+    line-height: 4.6em;
+    margin: 0px;
+}
+
+.disabled {
+    background: #dddddd;
+}
+
+.section-won-X {
+    border: solid 0.2em blue;
+}
+
+.section-won-O {
+    border: solid 0.2em green;
+}
