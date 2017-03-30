@@ -3,10 +3,19 @@ export class BoardLocation {
     y: number;
     sectionLocation: SectionLocation;
 
-    constructor(upperX: number, upperY: number, innerX: number, innerY) {
+    constructor(upperX: number, upperY: number, innerPosition?: SectionLocation, innerX?: number, innerY?: number) {
         this.x = upperX;
         this.y = upperY;
+        if (innerPosition) {
+            this.sectionLocation = innerPosition;
+        }
+        else if (innerX && innerY) {
         this.sectionLocation = new SectionLocation(innerX, innerY);
+        }
+    }
+
+    sameUpperAndInner(): boolean {
+        return this.x === this.sectionLocation.x && this.y === this.sectionLocation.y;
     }
 }
 

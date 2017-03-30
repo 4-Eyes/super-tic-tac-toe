@@ -7,7 +7,7 @@
 }
 
 .section {
-    border: solid 0.2em;
+    border: solid 0.3em;
 }
 
 .choice p {
@@ -21,9 +21,9 @@
 }
 
 .section-won-X {
-    border: solid 0.2em blue;
+    border: solid 0.3em orangered;
 }
 
 .section-won-O {
-    border: solid 0.2em green;
+    border: solid 0.3em lime;
 }

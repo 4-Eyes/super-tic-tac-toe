@@ -5,7 +5,6 @@ export class Section {
     miniBoard: string[][];
     private isWon: boolean;
     private winningToken: string;
-    private inserts: number;
 
     isActive: boolean;
     isFull: boolean;
@@ -18,7 +17,6 @@ export class Section {
         this.isWon = false;
         this.winningToken = Section.NOT_WON;
         this.isActive = true;
-        this.inserts = 0;
         this.isFull = false;
     }
 
@@ -30,13 +28,42 @@ export class Section {
         return this.isWon;
     }
 
+    wipeWinner(): void {
+        this.isWon = false;
+        this.winningToken = Section.NOT_WON;
+    }
+
     get(location: SectionLocation): string {
         return this.miniBoard[location.y][location.x];
     }
 
+    getAvailableMoves(): SectionLocation[] {
+        const moves = [];
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (this.miniBoard[i][j] === '') {
+                    moves.push(new SectionLocation(j, i));
+                }
+            }
+        }
+        return moves;
+    }
+
     set(location: SectionLocation, token: string): void {
         this.miniBoard[location.y][location.x] = token;
-        this.isFull = ++this.inserts === 9;
+        let checkFull = true;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (this.miniBoard[i][j] === '') {
+                    checkFull = false;
+                    break;
+                }
+            }
+            if (!checkFull) {
+                break;
+            }
+        }
+        this.isFull = checkFull;
         if (!this.isWon) {
             this.checkForWinner();
         }

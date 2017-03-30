@@ -15,7 +15,7 @@ export class BoardComponent {
     selectChoice(upperX: number, upperY: number, x: number, y: number) {
         if (this.game.board.get(upperX, upperY).isActive &&
         this.game.board.get(upperX, upperY).get(new SectionLocation(x, y)) === '') {
-            const move = new BoardLocation(upperX, upperY, x, y);
+            const move = new BoardLocation(upperX, upperY, null, x, y);
             this.game.makeMove(move);
         }
     }

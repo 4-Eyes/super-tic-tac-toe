@@ -16,4 +16,8 @@ export class GameComponent {
     reset() {
         this.game.reset();
     }
+
+    undo() {
+        this.game.undo();
+    }
 }

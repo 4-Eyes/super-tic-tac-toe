@@ -4,6 +4,7 @@ import { Section } from './section';
 export class Board {
     sections: Section[][];
     private winningToken: string;
+    private moves: BoardLocation[];
 
     constructor() {
         this.sections = [];
@@ -11,10 +12,25 @@ export class Board {
             this.sections.push([new Section, new Section, new Section]);
         }
         this.winningToken = null;
+        this.moves = [];
     }
 
     get(x: number, y: number): Section {
         return this.sections[y][x];
+    }
+
+    getAvailableMoves(): BoardLocation[] {
+        const moves = [];
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (this.sections[i][j].isActive) {
+                    for (const move of this.sections[i][j].getAvailableMoves()) {
+                        moves.push(new BoardLocation(j, i, move));
+                    }
+                }
+            }
+        }
+        return moves;
     }
 
     getWinner(): string {
@@ -29,12 +45,28 @@ export class Board {
         }
     }
 
+    undo() {
+        const move = this.moves.pop();
+        const section = this.sections[move.y][move.x];
+        section.wipeWinner();
+        section.set(move.sectionLocation, '');
+        if (this.moves.length === 0 || // if it was the first move
+        (this.moves[this.moves.length - 1].sameUpperAndInner() && // or if it was a move after filling a section and sending the next move to the same section
+        this.sections[this.moves[this.moves.length - 1].y][this.moves[this.moves.length - 1].x].isFull)) {
+            this.setSectionsEnabled(true);
+        } else {
+            this.setSectionsEnabled(false);
+            section.isActive = true;
+        }
+    }
+
     insertMove(location: BoardLocation, token: string): void {
         if (this.winningToken) {
             return;
         }
         this.sections[location.y][location.x].set(location.sectionLocation, token);
 
+        this.moves.push(location);
         const newSection = this.sections[location.sectionLocation.y][location.sectionLocation.x];
         if (newSection.isFull) {
             // if the section the person is being sent to is full then enabled all sections

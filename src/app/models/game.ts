@@ -27,4 +27,11 @@ export class Game {
         this.board.insertMove(moveLocation, this.tokens[this.turnCount++ % 2]);
         return this.board.checkForWinner() ? this.board.getWinner() : Section.NOT_WON;
     }
+
+    undo() {
+        if (this.turnCount >= 0) {
+            this.turnCount--;
+            this.board.undo();
+        }
+    }
 }

@@ -1,5 +1,6 @@
-<div>
+<div class="container">
     <button type="button" class="btn btn-default" (click)="reset()">Reset</button>
+    <button type="button" class="btn btn-default" (click)="undo()">Undo</button>
     <p>Current turn: {{game.getCurrentToken()}}</p>
 </div>
 <board [game]="game"></board>
