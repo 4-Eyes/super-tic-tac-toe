@@ -8,9 +8,8 @@ export class BoardLocation {
         this.y = upperY;
         if (innerPosition) {
             this.sectionLocation = innerPosition;
-        }
-        else if (innerX && innerY) {
-        this.sectionLocation = new SectionLocation(innerX, innerY);
+        } else {
+            this.sectionLocation = new SectionLocation(innerX, innerY);
         }
     }
 
