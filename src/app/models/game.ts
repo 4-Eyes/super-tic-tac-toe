@@ -24,14 +24,21 @@ export class Game {
     }
 
     makeMove(moveLocation: BoardLocation): string {
+        this.board.clearRedoStack();
         this.board.insertMove(moveLocation, this.tokens[this.turnCount++ % 2]);
         return this.board.checkForWinner() ? this.board.getWinner() : Section.NOT_WON;
     }
 
     undo() {
-        if (this.turnCount >= 0) {
+        if (this.turnCount > 0) {
             this.turnCount--;
             this.board.undo();
+        }
+    }
+
+    redo() {
+        if (this.board.canRedo()) {
+            this.board.redo(this.tokens[this.turnCount++ % 2]);
         }
     }
 }

@@ -20,4 +20,8 @@ export class GameComponent {
     undo() {
         this.game.undo();
     }
+
+    redo() {
+        this.game.redo();
+    }
 }

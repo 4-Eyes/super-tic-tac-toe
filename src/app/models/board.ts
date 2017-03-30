@@ -4,7 +4,8 @@ import { Section } from './section';
 export class Board {
     sections: Section[][];
     private winningToken: string;
-    private moves: BoardLocation[];
+    private undoStack: BoardLocation[];
+    private redoStack: BoardLocation[];
 
     constructor() {
         this.sections = [];
@@ -12,7 +13,8 @@ export class Board {
             this.sections.push([new Section, new Section, new Section]);
         }
         this.winningToken = null;
-        this.moves = [];
+        this.undoStack = [];
+        this.redoStack = [];
     }
 
     get(x: number, y: number): Section {
@@ -37,7 +39,7 @@ export class Board {
         return this.winningToken;
     }
 
-    setSectionsEnabled(enabled: boolean) {
+    setSectionsEnabled(enabled: boolean): void {
         for (const sectionRow of this.sections) {
             for (const section of sectionRow) {
                 section.isActive = enabled;
@@ -45,19 +47,33 @@ export class Board {
         }
     }
 
-    undo() {
-        const move = this.moves.pop();
+    undo(): void {
+        const move = this.undoStack.pop();
         const section = this.sections[move.y][move.x];
         section.wipeWinner();
         section.set(move.sectionLocation, '');
-        if (this.moves.length === 0 || // if it was the first move
-        (this.moves[this.moves.length - 1].sameUpperAndInner() && // or if it was a move after filling a section and sending the next move to the same section
-        this.sections[this.moves[this.moves.length - 1].y][this.moves[this.moves.length - 1].x].isFull)) {
+        if (this.undoStack.length === 0 || // if it was the first move
+        (this.undoStack[this.undoStack.length - 1].sameUpperAndInner() && // or if it was a move after filling a section and sending the next move to the same section
+        this.sections[this.undoStack[this.undoStack.length - 1].y][this.undoStack[this.undoStack.length - 1].x].isFull)) {
             this.setSectionsEnabled(true);
         } else {
             this.setSectionsEnabled(false);
             section.isActive = true;
         }
+        this.redoStack.push(move);
+    }
+
+    redo(token: string): void {
+        const move = this.redoStack.pop();
+        this.insertMove(move, token);
+    }
+
+    canRedo(): boolean {
+        return this.redoStack.length > 0;
+    }
+
+    clearRedoStack(): void {
+        this.redoStack = [];
     }
 
     insertMove(location: BoardLocation, token: string): void {
@@ -66,7 +82,7 @@ export class Board {
         }
         this.sections[location.y][location.x].set(location.sectionLocation, token);
 
-        this.moves.push(location);
+        this.undoStack.push(location);
         const newSection = this.sections[location.sectionLocation.y][location.sectionLocation.x];
         if (newSection.isFull) {
             // if the section the person is being sent to is full then enabled all sections
